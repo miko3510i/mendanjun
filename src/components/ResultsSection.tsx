@@ -92,33 +92,26 @@ export function ResultsSection({
           <table className="min-w-full divide-y divide-slate-200 text-sm">
             <thead className="bg-slate-50">
               <tr>
-                <th className="px-4 py-2 text-left font-medium text-slate-600">保護者</th>
-                <th className="px-4 py-2 text-left font-medium text-slate-600">生徒</th>
+                <th className="px-4 py-2 text-left font-medium text-slate-600">出席番号</th>
                 <th className="px-4 py-2 text-left font-medium text-slate-600">開始</th>
                 <th className="px-4 py-2 text-left font-medium text-slate-600">終了</th>
                 <th className="px-4 py-2 text-left font-medium text-slate-600">ステータス</th>
                 <th className="px-4 py-2 text-left font-medium text-slate-600">priority</th>
-                <th className="px-4 py-2 text-left font-medium text-slate-600">メモ</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 bg-white">
               {filteredRecords.map((record) => (
-                <tr key={`${record.guardianId}-${record.slotId ?? record.status}`}>
-                  <td className="px-4 py-2">
-                    <div className="font-medium text-slate-800">{record.guardianName}</div>
-                    <div className="text-xs text-slate-400">ID: {record.guardianId}</div>
-                  </td>
-                  <td className="px-4 py-2 text-slate-600">{record.studentName}</td>
+                <tr key={`${record.studentNumber}-${record.slotId ?? record.status}`}>
+                  <td className="px-4 py-2 text-slate-600">{record.studentNumber}</td>
                   <td className="px-4 py-2 text-slate-600">{formatDateTime(record.assignedStart)}</td>
                   <td className="px-4 py-2 text-slate-600">{formatDateTime(record.assignedEnd)}</td>
                   <td className="px-4 py-2 text-slate-600">{FILTER_LABELS[record.status as Filter] ?? record.status}</td>
                   <td className="px-4 py-2 text-slate-600">{record.matchedPriority ?? '-'}</td>
-                  <td className="px-4 py-2 text-slate-600">{record.notes ?? '-'}</td>
                 </tr>
               ))}
               {filteredRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-6 text-center text-sm text-slate-500">
+                  <td colSpan={5} className="px-4 py-6 text-center text-sm text-slate-500">
                     該当するレコードがありません。
                   </td>
                 </tr>

@@ -20,15 +20,12 @@ const triggerDownload = (filename: string, blob: Blob) => {
 
 export const downloadAssignmentsCsv = (records: AssignmentRecord[]) => {
   const rows = records.map((record) => ({
-    guardian_id: record.guardianId,
-    guardian_name: record.guardianName,
-    student_name: record.studentName,
+    student_number: record.studentNumber,
     slot_id: record.slotId ?? '',
     assigned_start: formatDateTime(record.assignedStart),
     assigned_end: formatDateTime(record.assignedEnd),
     status: record.status,
     matched_priority: record.matchedPriority ?? '',
-    notes: record.notes ?? '',
   }))
 
   triggerDownload('assignments.csv', createCsvBlob(rows))
@@ -38,10 +35,7 @@ export const downloadUnassignedCsv = (records: AssignmentRecord[]) => {
   const rows = records
     .filter((record) => record.status === 'unassigned')
     .map((record) => ({
-      guardian_id: record.guardianId,
-      guardian_name: record.guardianName,
-      student_name: record.studentName,
-      notes: record.notes ?? '',
+      student_number: record.studentNumber,
     }))
 
   triggerDownload('unassigned.csv', createCsvBlob(rows))

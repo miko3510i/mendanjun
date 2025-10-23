@@ -90,8 +90,8 @@ export function UploadSection({
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
         <UploadCard
-          title="保護者希望CSV"
-          description="guardian_id / priority / preferred_start などの列を含むCSVをアップロードしてください。"
+          title="希望一覧CSV"
+          description="student_number / priority / preferred_start などの列を含むCSVをアップロードしてください。"
           onUpload={onUploadFamilies}
           meta={familyMeta}
           isLoading={familyLoading}

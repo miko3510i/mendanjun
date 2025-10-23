@@ -5,10 +5,7 @@ import type { GuardianRequest, TeacherSlot } from '../types'
 
 describe('scheduleMeetings', () => {
   const buildRequest = (overrides: Partial<GuardianRequest>): GuardianRequest => ({
-    guardianId: 'g1',
-    guardianName: '保護者A',
-    studentName: '生徒A',
-    notes: undefined,
+    studentNumber: '1',
     preferences: [
       {
         priority: 1,
@@ -35,7 +32,7 @@ describe('scheduleMeetings', () => {
 
     expect(outcome.assignments).toHaveLength(1)
     expect(outcome.assignments[0]).toMatchObject({
-      guardianId: 'g1',
+      studentNumber: '1',
       slotId: 's1',
       status: 'assigned',
       matchedPriority: 1,
@@ -74,8 +71,8 @@ describe('scheduleMeetings', () => {
 
   it('枠が足りなければ未割当とする', () => {
     const requests = [
-      buildRequest({ guardianId: 'g1' }),
-      buildRequest({ guardianId: 'g2', guardianName: '保護者B', studentName: '生徒B' }),
+      buildRequest({ studentNumber: '1' }),
+      buildRequest({ studentNumber: '2' }),
     ]
     const slots = [buildSlot('s1', '2025-03-01 10:00', '2025-03-01 10:15')]
 

@@ -56,32 +56,27 @@ export function PreviewSection({
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">
           <header className="border-b border-slate-200 bg-slate-100 px-4 py-3">
-            <h3 className="text-sm font-semibold text-slate-700">保護者希望（{requests.length}件）</h3>
+            <h3 className="text-sm font-semibold text-slate-700">希望一覧（{requests.length}件）</h3>
           </header>
           <div className="max-h-80 overflow-auto">
             <table className="min-w-full divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">保護者</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">生徒</th>
+                  <th className="px-4 py-2 text-left font-medium text-slate-600">出席番号</th>
                   <th className="px-4 py-2 text-left font-medium text-slate-600">希望枠</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 bg-white">
                 {requests.map((request) => (
-                  <tr key={request.guardianId}>
-                    <td className="px-4 py-2">
-                      <div className="font-medium text-slate-800">{request.guardianName}</div>
-                      <div className="text-xs text-slate-400">ID: {request.guardianId}</div>
-                    </td>
-                    <td className="px-4 py-2 text-slate-600">{request.studentName}</td>
+                  <tr key={request.studentNumber}>
+                    <td className="px-4 py-2 text-slate-600">{request.studentNumber}</td>
                     <td className="px-4 py-2 text-slate-600">
                       <ul className="space-y-1">
                         {request.preferences.map((preference) => {
                           const duration = preference.preferredEnd.diff(preference.preferredStart, 'minute')
                           const mismatch = duration !== meetingMinutes
                           return (
-                            <li key={`${request.guardianId}-${preference.priority}`}>
+                            <li key={`${request.studentNumber}-${preference.priority}`}>
                               <span className="font-semibold">第{preference.priority}希望:</span>{' '}
                               <span>{formatRange(preference.preferredStart, preference.preferredEnd)}</span>
                               {mismatch ? (

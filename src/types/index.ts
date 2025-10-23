@@ -22,10 +22,7 @@ export interface GuardianPreference {
 }
 
 export interface GuardianRequest {
-  guardianId: string
-  guardianName: string
-  studentName: string
-  notes?: string
+  studentNumber: string
   preferences: GuardianPreference[]
 }
 
@@ -39,15 +36,12 @@ export interface TeacherSlot {
 export type AssignmentStatus = 'assigned' | 'auto_adjusted' | 'unassigned'
 
 export interface AssignmentRecord {
-  guardianId: string
-  guardianName: string
-  studentName: string
+  studentNumber: string
   slotId?: string
   assignedStart?: Dayjs
   assignedEnd?: Dayjs
   status: AssignmentStatus
   matchedPriority?: number
-  notes?: string
 }
 
 export interface AssignmentOutcome {
@@ -60,4 +54,3 @@ export interface AssignmentOutcome {
     unassigned: number
   }
 }
-

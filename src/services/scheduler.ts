@@ -33,15 +33,12 @@ export function scheduleMeetings(
       if (index !== -1) {
         const [slot] = availableSlots.splice(index, 1)
         assignedRecord = {
-          guardianId: request.guardianId,
-          guardianName: request.guardianName,
-          studentName: request.studentName,
+          studentNumber: request.studentNumber,
           slotId: slot.slotId,
           assignedStart: slot.start,
           assignedEnd: slot.end,
           status: 'assigned',
           matchedPriority: preference.priority,
-          notes: request.notes,
         }
         break
       }
@@ -64,30 +61,19 @@ export function scheduleMeetings(
         })
 
         const [slot] = availableSlots.splice(closestIndex, 1)
-        const deltaSummary = smallestDelta === 0 ? '' : `（希望から${smallestDelta}分ズレ）`
-
         assignedRecord = {
-          guardianId: request.guardianId,
-          guardianName: request.guardianName,
-          studentName: request.studentName,
+          studentNumber: request.studentNumber,
           slotId: slot.slotId,
           assignedStart: slot.start,
           assignedEnd: slot.end,
           status: 'auto_adjusted',
           matchedPriority: topPreference.priority,
-          notes: [request.notes, deltaSummary.trim()].filter(Boolean).join(' '),
         }
       }
     }
 
     if (!assignedRecord) {
-      unassigned.push({
-        guardianId: request.guardianId,
-        guardianName: request.guardianName,
-        studentName: request.studentName,
-        status: 'unassigned',
-        notes: request.notes,
-      })
+      unassigned.push({ studentNumber: request.studentNumber, status: 'unassigned' })
     } else {
       assignments.push(assignedRecord)
     }

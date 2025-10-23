@@ -137,7 +137,7 @@ function App() {
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6">
           <h1 className="text-2xl font-bold text-slate-900">面談スケジュール自動割当</h1>
           <p className="text-sm text-slate-500">
-            保護者の希望CSVと教師の空き枠CSVをアップロードすると、希望優先で面談順を自動で組みます。
+            出席番号と希望日時をまとめたCSVと教師の空き枠CSVを読み込むと、希望優先で面談順を自動で組みます。
           </p>
           <Stepper steps={STEPS} currentStep={activeStep} />
         </div>

@@ -9,14 +9,7 @@ import type {
   ValidationMessage,
 } from '../types'
 
-const REQUIRED_FAMILY_FIELDS = [
-  'guardian_id',
-  'guardian_name',
-  'student_name',
-  'priority',
-  'preferred_start',
-  'preferred_end',
-]
+const REQUIRED_FAMILY_FIELDS = ['student_number', 'priority', 'preferred_start', 'preferred_end']
 
 const REQUIRED_SLOT_FIELDS = ['slot_id', 'start', 'end']
 
@@ -80,13 +73,10 @@ export function transformFamilyRows(
       }
     }
 
-    const guardianId = row.guardian_id
-    const guardianName = row.guardian_name
-    const studentName = row.student_name
+    const studentNumber = row.student_number
     const priority = Number.parseInt(row.priority, 10)
     const preferredStart = dayjs(row.preferred_start)
     const preferredEnd = dayjs(row.preferred_end)
-    const notes = row.notes || undefined
 
     if (Number.isNaN(priority) || priority <= 0) {
       messages.push({
@@ -131,26 +121,13 @@ export function transformFamilyRows(
       rowNumber,
     }
 
-    if (!requests.has(guardianId)) {
-      requests.set(guardianId, {
-        guardianId,
-        guardianName,
-        studentName,
-        notes,
+    if (!requests.has(studentNumber)) {
+      requests.set(studentNumber, {
+        studentNumber,
         preferences: [preference],
       })
     } else {
-      const request = requests.get(guardianId)!
-      if (request.guardianName !== guardianName || request.studentName !== studentName) {
-        messages.push({
-          level: 'warning',
-          message: `guardian_id ${guardianId} で氏名が一致していません`,
-          context: `row ${rowNumber}`,
-        })
-      }
-      if (notes && !request.notes) {
-        request.notes = notes
-      }
+      const request = requests.get(studentNumber)!
       request.preferences.push(preference)
     }
   })
@@ -167,7 +144,7 @@ export function transformFamilyRows(
       if (seenPriority.has(pref.priority)) {
         messages.push({
           level: 'warning',
-          message: `${request.guardianId} の priority ${pref.priority} が重複しています`,
+          message: `student_number ${request.studentNumber} の priority ${pref.priority} が重複しています`,
           context: `row ${pref.rowNumber}`,
         })
       }

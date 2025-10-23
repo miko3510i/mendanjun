@@ -11,16 +11,13 @@
 - **ユーティリティ**: `dayjs`（日時計算、タイムゾーン `Asia/Tokyo` 固定）
 
 ## データスキーマ
-### 保護者希望 CSV (`families.csv`)
-| column             | type           | required | note                                      |
-|--------------------|----------------|----------|-------------------------------------------|
-| guardian_id        | string         | ✅        | 一意ID                                    |
-| guardian_name      | string         | ✅        | 保護者氏名                                |
-| student_name       | string         | ✅        | 生徒氏名                                  |
-| priority           | integer (1..)  | ✅        | 希望優先度 1が最優先                      |
-| preferred_start    | ISO datetime   | ✅        | `YYYY-MM-DD HH:MM` 15分刻み               |
-| preferred_end      | ISO datetime   | ✅        | start + 面談時間                          |
-| notes              | string         | ❌        | 任意メモ                                  |
+### 希望 CSV (`families.csv`)
+| column          | type           | required | note                                      |
+|-----------------|----------------|----------|-------------------------------------------|
+| student_number  | string         | ✅        | クラス内で一意な出席番号                   |
+| priority        | integer (1..)  | ✅        | 希望優先度 1が最優先                      |
+| preferred_start | ISO datetime   | ✅        | `YYYY-MM-DD HH:MM` 15分刻み               |
+| preferred_end   | ISO datetime   | ✅        | start + 面談時間                          |
 
 ### 教師枠 CSV (`teacher_slots.csv`)
 | column   | type         | required | note                               |
@@ -30,24 +27,21 @@
 | end      | ISO datetime | ✅        | start + 面談時間（柔軟長さ対応）  |
 
 ### 割当結果 CSV (`assignments.csv`)
-| column             | note                                                   |
-|--------------------|--------------------------------------------------------|
-| guardian_id        | 入力からコピー                                         |
-| guardian_name      | 同上                                                   |
-| student_name       | 同上                                                   |
-| assigned_start     | 実際に割り当てた開始時刻（自動調整時は近傍枠）         |
-| assigned_end       | 終了時刻                                               |
-| slot_id            | 割当済教師枠。自動調整時は選択した枠ID                 |
-| status             | `assigned` / `auto_adjusted` / `unassigned`            |
-| matched_priority   | 成功時に採用された希望優先度                           |
-| notes              | 保護者メモ + システム注記（自動調整理由など）         |
+| column           | note                                                   |
+|------------------|--------------------------------------------------------|
+| student_number   | 入力からコピー                                         |
+| assigned_start   | 実際に割り当てた開始時刻（自動調整時は近傍枠）         |
+| assigned_end     | 終了時刻                                               |
+| slot_id          | 割当済教師枠。自動調整時は選択した枠ID                 |
+| status           | `assigned` / `auto_adjusted`                            |
+| matched_priority | 成功時に採用された希望優先度                           |
 
-未割当リストは `unassigned.csv` として guardian_id, guardian_name, student_name, reasons を出力。
+未割当リストは `unassigned.csv` として student_number を出力。
 
 ## 割当アルゴリズム
 1. 両CSVを読み込み、日時を `dayjs` で正規化（`Asia/Tokyo`）。
 2. 教師枠を開始時刻でソートし、`availableSlots`（未使用）として保持。
-3. 保護者希望を `guardian_id` でグルーピング → 優先度昇順にソート。
+3. 希望データを `student_number` でグルーピング → 優先度昇順にソート。
 4. 各保護者について優先度順に希望枠を走査：
    - 希望時間と完全一致する教師枠があれば割当、ステータス `assigned`。
    - 無ければ `availableSlots` から開始時刻の絶対差が最小の枠を探索。
@@ -93,4 +87,3 @@
 - `services/scheduler.test.ts` にて代表ケース（希望通り/自動調整/全滅）を検証。
 - バリデーションのユニットテストも将来追加可能。
 - E2Eは将来的に Playwright など採用可能だが今回は省略。
-
