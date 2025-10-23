@@ -53,10 +53,16 @@ npm run dev
 - `src/services/csv.ts` : CSVパースとバリデーション
 - `src/services/scheduler.ts` : 割当ロジック（希望優先→近傍枠→未割当）
 - `src/components/` : ステップ表示、プレビュー、結果パネルなどのUI
-- `docs/design.md` : 要件ヒアリングに基づく設計メモ
+- `DESIGN.md` : 要件ヒアリングに基づく設計メモ
 
 ## 今後の拡張例
 
 - PDF出力やGoogleスプレッドシート連携
 - 兄弟調整や特定時間帯の除外ルール
 - ローカルストレージへの入力保存、CSVテンプレ生成
+
+## GitHub Pages への公開メモ
+
+1. `vite.config.ts` の `base` が `/mendanjun/` になっているので、このリポジトリを `https://<ユーザー名>.github.io/mendanjun/` で配信できます。リポジトリ名を変える場合は `/公開パス/` に読み替えてください。
+2. `npm run build` で `dist/` を生成し、GitHub Pages の設定で参照するブランチ・ディレクトリ（例: `gh-pages` ブランチ、または `main` ブランチの `docs/` フォルダ）に `dist` の中身を配置します。
+3. GitHub の Settings → Pages でデプロイ元を指定し、反映（数分）を待てば公開完了です。
