@@ -53,7 +53,7 @@ npm run dev
 - `src/services/csv.ts` : CSVパースとバリデーション
 - `src/services/scheduler.ts` : 割当ロジック（希望優先→近傍枠→未割当）
 - `src/components/` : ステップ表示、プレビュー、結果パネルなどのUI
-- `docs/design.md` : 要件ヒアリングに基づく設計メモ
+- `DESIGN.md` : 要件ヒアリングに基づく設計メモ
 
 ## 今後の拡張例
 
